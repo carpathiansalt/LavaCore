@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Terms of Service — LavaCore';
+const description = 'Terms of service for the LavaCore app and related sites.';
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="border-b border-white/10 bg-[#0B0705]/90 px-5 py-6">
+    <nav class="wrap flex items-center justify-between text-sm font-bold text-ash">
+      <a href="/" class="text-paper hover:text-ember">← LavaCore</a>
+      <a href="/privacy" class="hover:text-ember">Privacy</a>
+    </nav>
+  </header>
+
+  <main class="wrap section max-w-3xl text-paper">
+    <h1 class="text-4xl font-black">Terms of Service</h1>
+    <p class="mt-2 text-ash">Last updated: April 2026</p>
+
+    <p class="mt-8 leading-8 text-ash">
+      These terms apply to the LavaCore mobile and web applications, the marketing
+      site at <span class="text-paper">lavacore.app</span>, and the
+      hosted app at <span class="text-paper">web.lavacore.app</span>, operated by
+      <strong class="text-paper">LavaCore</strong> (“we”, “us”).
+    </p>
+
+    <h2 class="mt-10 text-2xl font-black text-paper">Use of the service</h2>
+    <p class="mt-3 leading-8 text-ash">
+      LavaCore connects over Bluetooth Low Energy to compatible hardware. You are
+      responsible for safe use of devices and compliance with local regulations.
+      We provide the software “as is” without warranties beyond what the law requires.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-black text-paper">Accounts and data</h2>
+    <p class="mt-3 leading-8 text-ash">
+      Optional cloud features may require an account. You can request account or
+      data questions at <a class="text-ember underline" href="mailto:support@lavacore.app">support@lavacore.app</a>.
+    </p>
+
+    <h2 class="mt-10 text-2xl font-black text-paper">Changes</h2>
+    <p class="mt-3 leading-8 text-ash">
+      We may update these terms; the “Last updated” date will change when we do.
+      Continued use after changes means you accept the revised terms.
+    </p>
+  </main>
+
+  <footer class="border-t border-white/10 px-5 py-8 text-center text-sm text-ash">
+    <a href="/" class="hover:text-ember">Home</a>
+    ·
+    <a href="mailto:support@lavacore.app" class="hover:text-ember">support@lavacore.app</a>
+  </footer>
+</BaseLayout>

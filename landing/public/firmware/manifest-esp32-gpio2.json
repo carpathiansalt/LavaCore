@@ -1,0 +1,13 @@
+{
+  "name": "LavaCore — WLED Boards (GPIO 2)",
+  "version": "0.1.6",
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "improv": false,
+      "parts": [
+        { "path": "firmware-esp32-gpio2-merged.bin", "offset": 0 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+# ---------------------------------------------------------------------------
+# LavaCore (public): firmware, protocol docs, landing site, tooling.
+# The Flutter mobile/web app lives in `new_app2/` and is intentionally NOT
+# tracked here — keep it in a separate private repository if the GitHub
+# remote for this tree is public.
+# ---------------------------------------------------------------------------
+/new_app2/
+
+# PlatformIO / ESP-IDF
+firmware/.pio/
+firmware/.vscode/
+*.elf
+
+# Landing / web build outputs
+landing/build/
+landing/.dart_tool/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.log
+
+# Cursor / local
+.cursor/

@@ -1,0 +1,475 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const features = [
+  {
+    icon: '📱',
+    title: 'Motion Control',
+    body: 'Tilt your phone to move left or right. Your device becomes the joystick — no extra hardware needed on the player side.',
+  },
+  {
+    icon: '⚔️',
+    title: 'Attack System',
+    body: 'Tap or shake to unleash a powerful wobble attack that sweeps the LED strip and destroys enemies in its path.',
+  },
+  {
+    icon: '⚡',
+    title: 'Low Latency BLE',
+    body: 'Optimized Bluetooth Low Energy connection at 40 Hz delivers real-time, lag-free gameplay over NimBLE GATT.',
+  },
+  {
+    icon: '🎨',
+    title: 'Fully Configurable',
+    body: 'Tune LED count, brightness, attack sensitivity, lives, input mode, volume, and ambient presets — all from the app, applied to your board in real time over BLE.',
+  },
+  {
+    icon: '👥',
+    title: 'Up to 4 Players',
+    body: 'Each phone gets a stable color slot. Team score up front, personal skill still visible. Late joiners wait for a safe level boundary.',
+  },
+  {
+    icon: '🛠️',
+    title: 'Level Builder',
+    body: 'Design custom levels on the same 1000-unit virtual line used by the firmware. Place enemies, lava, conveyors, and bosses, then export to C++ or share as JSON.',
+  },
+];
+
+const steps = [
+  { num: '01', title: 'Pair', desc: 'Power on your ESP32. Open LavaCore, scan for your controller, and bind it to your phone over BLE.' },
+  { num: '02', title: 'Calibrate', desc: 'Hold your phone flat — set neutral posture once. Then tilt left/right to move and shake to attack.' },
+  { num: '03', title: 'Play', desc: 'Share the LED strip with up to 3 friends and race through lava, enemies, conveyors, and bosses.' },
+  { num: '04', title: 'Tune', desc: 'Adjust LED count, brightness, sensitivity, lives, and ambient modes — all from the app. Flash firmware updates via the browser.' },
+];
+
+const hardware = [
+  { name: 'ESP32', desc: 'Any ESP32-WROOM-32 dev board. The original TWANG32 hardware works out of the box.' },
+  { name: 'WLED', desc: 'WLED-compatible boards and shields. If you have WLED hardware, you already have what you need.' },
+  { name: 'WS2812B', desc: 'Any addressable LED strip compatible with FastLED — WS2812B, APA102C, SK6812, and more.' },
+  { name: 'FastLED', desc: 'The firmware runs on top of FastLED on core 0, with the game loop on core 1 for maximum performance.' },
+];
+
+const timeline = [
+  {
+    year: '2017',
+    title: 'Line Wobbler → TWANG',
+    author: 'Robin B & Critters',
+    desc: 'The original 1D LED dungeon crawler — an Arduino Mega, a spring doorstop as joystick, an MPU6050 accelerometer, and a strip of addressable LEDs. A beautifully simple idea.',
+    link: 'https://github.com/Critters/TWANG',
+  },
+  {
+    year: '2018',
+    title: 'TWANG → TWANG32',
+    author: 'Bart Dring (bdring)',
+    desc: 'ESP32 port — lower cost, faster processor, more memory, DAC sound, WiFi settings panel. Ready-to-play kits on Tindie. The firmware that made the game accessible to makers worldwide.',
+    link: 'https://github.com/bdring/TWANG32',
+  },
+  {
+    year: '2024–26',
+    title: 'TWANG32 → LavaCore',
+    author: 'LavaCore Team',
+    desc: 'Full rewrite — NimBLE BLE phone controller replacing the physical joystick, Flutter mobile app, 4-player co-op, PlatformIO modular firmware, level builder, WLED compatibility. The dungeon crawler evolved into a party game.',
+    link: '#',
+  },
+];
+---
+
+<BaseLayout>
+  <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+  <header id="top" class="fixed left-0 right-0 top-0 z-30 border-b border-white/5 bg-obsidian/80 backdrop-blur-lg">
+    <nav class="flex h-20 items-center justify-between px-6 mx-auto max-w-7xl">
+      <a href="/" class="flex items-center gap-4 group">
+        <img src="/assets/logo.png" alt="LavaCore Logo" class="h-10 w-auto object-contain drop-shadow-[0_0_8px_rgba(255,77,0,0.5)] group-hover:drop-shadow-[0_0_16px_rgba(255,77,0,0.8)] transition-all" />
+        <span class="font-display tracking-widest text-2xl text-paper pt-1">LAVACORE</span>
+      </a>
+      <div class="hidden items-center gap-8 text-sm font-ui uppercase tracking-wider text-ash lg:flex">
+        <a href="#features" class="hover:text-ember transition-colors">Features</a>
+        <a href="#how-it-works" class="hover:text-ember transition-colors">How It Works</a>
+        <a href="#compatibility" class="hover:text-ember transition-colors">Hardware</a>
+        <a href="#origin" class="hover:text-ember transition-colors">About</a>
+        <a href="#beta" class="hover:text-ember transition-colors">Join Beta</a>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-3 font-ui uppercase font-bold tracking-wide">
+        <a
+          class="hidden px-5 py-2.5 rounded-md border border-charcoal text-paper text-sm hover:border-ember hover:text-ember transition-all lg:inline-block"
+          href="https://web.lavacore.app"
+          target="_blank"
+          rel="noopener noreferrer">Open App</a>
+        <a class="px-3 py-1.5 text-xs sm:px-5 sm:py-2 sm:text-sm rounded-md bg-gradient-to-r from-ember to-flare text-obsidian hover:shadow-[0_0_20px_rgba(255,77,0,0.6)] hover:scale-105 transition-all whitespace-nowrap" href="#firmware">Get Firmware</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════════ HERO ═══════════════════ -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-obsidian">
+      <img
+        src="/assets/hero-bg.png"
+        alt="Volcanic LED strip landscape"
+        class="absolute inset-0 h-full w-full object-cover opacity-50"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/60 to-obsidian/20"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-obsidian to-transparent"></div>
+
+      <div class="relative z-10 text-center px-6 max-w-5xl mx-auto flex flex-col items-center">
+        <p class="font-ui uppercase tracking-[0.25em] text-flare mb-6 font-bold text-sm drop-shadow-[0_0_12px_rgba(255,122,0,0.8)]">Motion-Powered LED Gaming</p>
+        <h1 class="text-6xl sm:text-7xl md:text-9xl font-display text-paper leading-[0.85] tracking-tight mb-8">
+          FEEL THE <span class="text-transparent bg-clip-text bg-gradient-to-r from-ember to-magma">HEAT.</span><br/>
+          CONTROL THE <span class="text-transparent bg-clip-text bg-gradient-to-r from-flare to-magma">LIGHT.</span>
+        </h1>
+        <p class="text-lg sm:text-xl md:text-2xl text-ash mb-12 max-w-2xl font-body leading-relaxed">
+          Turn your phone into a motion controller for LED strip games.
+          Tilt to move. Strike to attack. Score together across up to four players.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a id="cta-play" class="px-10 py-4 rounded-lg bg-gradient-to-r from-ember to-crimson text-white font-ui font-bold uppercase tracking-wider text-lg hover:scale-105 hover:shadow-[0_0_40px_rgba(204,51,0,0.7)] transition-all flex items-center justify-center gap-3" href="https://web.lavacore.app" target="_blank" rel="noopener noreferrer">
+            ▶ Play Now
+          </a>
+          <a id="cta-firmware" class="px-10 py-4 rounded-lg border-2 border-ember/40 bg-charcoal/60 backdrop-blur text-paper font-ui font-bold uppercase tracking-wider text-lg hover:border-ember hover:bg-charcoal transition-all flex items-center justify-center gap-3" href="#firmware">
+            ⬇ Get Firmware
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ FEATURES ═══════════════════ -->
+    <section id="features" class="py-24 md:py-32 bg-obsidian border-t border-charcoal">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <p class="font-ui text-ember uppercase tracking-widest font-bold mb-3">Key Features</p>
+          <h2 class="text-5xl md:text-6xl font-display text-white leading-none">EVERYTHING YOU NEED<br/>TO PLAY YOUR LIGHTS</h2>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((f) => (
+            <article class="bg-charcoal/80 p-8 rounded-xl border border-white/5 hover:border-ember/40 transition-all group relative overflow-hidden hover:shadow-[0_0_30px_rgba(255,77,0,0.08)]">
+              <div class="absolute inset-0 bg-gradient-to-br from-ember/8 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div class="text-4xl mb-4 relative z-10">{f.icon}</div>
+              <h3 class="text-2xl font-display tracking-wide text-white mb-3 relative z-10">{f.title}</h3>
+              <p class="text-ash font-body leading-relaxed relative z-10">{f.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
+    <section id="how-it-works" class="py-24 md:py-32 bg-[#080504] border-y border-charcoal">
+      <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+        <div class="rounded-xl overflow-hidden shadow-[0_0_50px_rgba(255,77,0,0.1)] border border-charcoal relative group">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+          <img src="/assets/tilt-attack.png" alt="Tilt to move, shake to attack" loading="lazy" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
+        </div>
+
+        <div>
+          <p class="font-ui text-flare uppercase tracking-widest font-bold mb-3">How It Works</p>
+          <h2 class="text-5xl md:text-6xl font-display text-white leading-none mb-12">FROM PAIRING<br/>TO PLAY</h2>
+          <div class="space-y-8">
+            {steps.map((s) => (
+              <div class="flex gap-6 group">
+                <span class="flex items-center justify-center h-14 w-14 rounded-full bg-charcoal border border-white/10 font-display text-2xl text-magma group-hover:border-magma group-hover:bg-magma/10 group-hover:shadow-[0_0_16px_rgba(255,200,87,0.2)] transition-all shrink-0">
+                  {s.num}
+                </span>
+                <div>
+                  <h3 class="text-2xl font-display tracking-wide text-paper">{s.title}</h3>
+                  <p class="text-ash font-body mt-1 leading-relaxed">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ COMPATIBILITY ═══════════════════ -->
+    <section id="compatibility" class="py-24 md:py-32 bg-obsidian">
+      <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+        <div class="order-2 lg:order-1">
+          <p class="font-ui text-ember uppercase tracking-widest font-bold mb-3">Works With Your Hardware</p>
+          <h2 class="text-5xl md:text-6xl font-display text-white leading-none mb-6">ANY ESP32.<br/>ANY STRIP.</h2>
+          <p class="text-lg text-ash font-body leading-relaxed mb-10">
+            Got an old TWANG32 controller? A WLED board or shield? Any ESP32 with addressable LEDs?
+            Flash the LavaCore firmware and you're ready to play — no new hardware required.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            {hardware.map((hw) => (
+              <div class="bg-charcoal/60 p-5 rounded-lg border border-white/5 hover:border-ember/30 transition-colors">
+                <h4 class="font-display text-xl text-magma tracking-wide">{hw.name}</h4>
+                <p class="text-sm text-ash font-body mt-1 leading-relaxed">{hw.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="order-1 lg:order-2 rounded-xl overflow-hidden shadow-[0_0_40px_rgba(255,77,0,0.12)] border border-charcoal relative group">
+          <img src="/assets/compatibility.png" alt="ESP32, WLED, and LED strip hardware" loading="lazy" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ MULTIPLAYER ═══════════════════ -->
+    <section id="multiplayer" class="py-24 md:py-32 bg-[#080504] border-y border-charcoal">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+          <div class="rounded-xl overflow-hidden shadow-[0_0_50px_rgba(255,77,0,0.12)] border border-charcoal relative group">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
+            <img src="/assets/multiplayer.png" alt="Four-player cooperative gameplay" loading="lazy" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
+          </div>
+          <div>
+            <p class="font-ui text-flare uppercase tracking-widest font-bold mb-3">Multiplayer</p>
+            <h2 class="text-5xl md:text-6xl font-display text-white leading-none mb-6">TEAM SCORE UP FRONT.<br/>PERSONAL SKILL VISIBLE.</h2>
+            <p class="text-lg text-ash font-body leading-relaxed mb-8">
+              The firmware keeps per-slot scores. The app derives a team score from telemetry, records both values, and keeps the leaderboard fair for single-player and multiplayer runs alike.
+            </p>
+            <div class="space-y-4">
+              <div class="flex items-start gap-3">
+                <span class="text-ember text-xl mt-0.5">●</span>
+                <p class="text-ash font-body"><strong class="text-paper">Stable color slots</strong> — each phone gets assigned a persistent player color on connection.</p>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-flare text-xl mt-0.5">●</span>
+                <p class="text-ash font-body"><strong class="text-paper">Safe late join</strong> — new players wait for the next level boundary instead of spawning into danger.</p>
+              </div>
+              <div class="flex items-start gap-3">
+                <span class="text-magma text-xl mt-0.5">●</span>
+                <p class="text-ash font-body"><strong class="text-paper">Combo tracking</strong> — personal contribution, lives, and combo multiplier shown per player.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ ORIGIN STORY ═══════════════════ -->
+    <section id="origin" class="py-24 md:py-32 bg-obsidian border-t border-charcoal">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16 max-w-3xl mx-auto">
+          <p class="font-ui text-ember uppercase tracking-widest font-bold mb-3">Standing on the Shoulders of Makers</p>
+          <h2 class="text-5xl md:text-6xl font-display text-white leading-none mb-6">THE ORIGIN STORY</h2>
+          <p class="text-lg text-ash font-body leading-relaxed">
+            LavaCore didn't appear from nowhere. It's the latest chapter in a lineage of brilliant open-source makers
+            who turned a spring doorstop and a strip of LEDs into a game that captivated the maker community.
+          </p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+          <div class="rounded-xl overflow-hidden shadow-[0_0_40px_rgba(255,77,0,0.1)] border border-charcoal">
+            <img src="/assets/origin-timeline.png" alt="TWANG to TWANG32 to LavaCore evolution" loading="lazy" class="w-full h-auto object-cover" />
+          </div>
+          <div class="space-y-8">
+            {timeline.map((t) => (
+              <div class="relative pl-8 border-l-2 border-charcoal hover:border-ember transition-colors group">
+                <div class="absolute left-[-9px] top-1 w-4 h-4 rounded-full bg-charcoal border-2 border-ember group-hover:bg-ember group-hover:shadow-[0_0_12px_rgba(255,77,0,0.5)] transition-all"></div>
+                <p class="font-ui text-ember uppercase tracking-widest text-sm font-bold">{t.year}</p>
+                <h3 class="text-2xl font-display text-paper mt-1">{t.title}</h3>
+                <p class="text-sm text-magma font-ui mt-1">by {t.author}</p>
+                <p class="text-ash font-body mt-2 leading-relaxed">{t.desc}</p>
+                {t.link !== '#' && (
+                  <a href={t.link} target="_blank" rel="noopener noreferrer" class="inline-block mt-2 text-sm text-flare hover:text-magma transition-colors font-ui font-bold uppercase tracking-wide">
+                    View on GitHub →
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="text-center bg-charcoal/50 rounded-xl border border-white/5 p-8 max-w-3xl mx-auto">
+          <p class="text-ash font-body leading-relaxed">
+            LavaCore is built under the <strong class="text-paper">MIT License</strong>, just like the original TWANG and TWANG32.
+            We honour the open-source spirit and encourage you to fork, modify, and build on top of this work.
+            Special thanks to <strong class="text-magma">Robin B</strong>, <strong class="text-magma">Critters</strong>,
+            and <strong class="text-magma">Bart Dring (bdring)</strong> for starting it all.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ FIRMWARE ═══════════════════ -->
+    <section id="firmware" class="py-24 md:py-32 bg-[#080504] border-y border-charcoal">
+      <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="font-ui text-ember uppercase tracking-widest font-bold mb-3">Flash Your Board</p>
+          <h2 class="text-5xl md:text-6xl font-display text-white leading-none mb-6">GET THE<br/>FIRMWARE</h2>
+          <p class="text-lg text-ash font-body leading-relaxed mb-8">
+            The LavaCore firmware is a complete PlatformIO rewrite of TWANG32 — NimBLE BLE, dual-core RTOS,
+            NVS settings, input abstraction, and a mode manager that's ready for future game modes.
+          </p>
+          <div class="space-y-3 mb-10">
+            <div class="flex items-center gap-3 text-ash font-body">
+              <span class="text-ember">✓</span> Works with ESP32-WROOM-32 dev boards
+            </div>
+            <div class="flex items-center gap-3 text-ash font-body">
+              <span class="text-ember">✓</span> Supports WLED boards (GPIO 2) and custom GPIO pins
+            </div>
+            <div class="flex items-center gap-3 text-ash font-body">
+              <span class="text-ember">✓</span> Flash from your browser — no CLI needed
+            </div>
+            <div class="flex items-center gap-3 text-ash font-body">
+              <span class="text-ember">✓</span> MIT Licensed — fork, modify, and build
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-4">
+            <a id="btn-firmware-flash" class="px-8 py-4 rounded-lg bg-gradient-to-r from-ember to-crimson text-white font-ui font-bold uppercase tracking-wider hover:scale-105 hover:shadow-[0_0_30px_rgba(204,51,0,0.6)] transition-all inline-flex items-center gap-2"
+               href="/flash">
+              ⚡ Flash from Browser
+            </a>
+            <a id="btn-firmware-download" class="px-8 py-4 rounded-lg border border-white/20 bg-charcoal/50 text-paper font-ui font-bold uppercase tracking-wider hover:border-ember transition-all"
+               href="https://firebasestorage.googleapis.com/v0/b/led-runner.firebasestorage.app/o/firmware%2Fesp32dev%2Ffirmware.bin?alt=media" download="lavacore-firmware.bin">
+              ⬇ Download .bin
+            </a>
+            <a id="btn-firmware-source" class="px-8 py-4 rounded-lg border border-white/20 bg-charcoal/50 text-paper font-ui font-bold uppercase tracking-wider hover:border-ember transition-all"
+               href="https://github.com/nicholasgasior/TWANG32" target="_blank" rel="noopener noreferrer">
+              View Source
+            </a>
+          </div>
+        </div>
+        <div class="rounded-xl overflow-hidden shadow-[0_0_40px_rgba(255,77,0,0.1)] border border-charcoal relative group">
+          <img src="/assets/firmware-flash.png" alt="Flashing the ESP32 firmware" loading="lazy" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ BETA SIGNUP ═══════════════════ -->
+    <section id="beta" class="py-24 md:py-32 bg-obsidian relative overflow-hidden">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-ember/5 rounded-full blur-[120px]"></div>
+
+      <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+        <div class="rounded-xl overflow-hidden shadow-[0_0_50px_rgba(255,77,0,0.1)] border border-charcoal relative">
+          <img src="/assets/community-beta.png" alt="Join the LavaCore closed beta community" loading="lazy" class="w-full h-auto object-cover" />
+        </div>
+        <div>
+          <p class="font-ui text-flare uppercase tracking-widest font-bold mb-3">Closed Testing</p>
+          <h2 class="text-5xl md:text-6xl font-display text-white leading-none mb-6">JOIN THE<br/>BETA</h2>
+          <p class="text-lg text-ash font-body leading-relaxed mb-4">
+            We're building toward a Google Play release. Sign up for closed testing to get early access to the native
+            Android app, provide feedback, and help shape the future of LavaCore.
+          </p>
+          <p class="text-ash font-body leading-relaxed mb-8">
+            <strong class="text-paper">Already have hardware?</strong> The web app at
+            <a href="https://web.lavacore.app" target="_blank" rel="noopener noreferrer" class="text-flare hover:text-magma transition-colors font-semibold">web.lavacore.app</a>
+            works right now on Android Chrome/Edge with Web Bluetooth — no install needed.
+          </p>
+
+          <form id="beta-form" class="flex flex-col sm:flex-row gap-3" action="mailto:beta@lavacore.app" method="post" enctype="text/plain">
+            <input
+              id="beta-email"
+              type="email"
+              required
+              placeholder="your@email.com"
+              class="flex-1 px-5 py-4 rounded-lg bg-charcoal border border-white/10 text-paper placeholder:text-ash/40 font-body focus:border-ember focus:outline-none focus:ring-1 focus:ring-ember/50 transition-all"
+            />
+            <button
+              id="beta-submit"
+              type="submit"
+              class="px-8 py-4 rounded-lg bg-gradient-to-r from-ember to-flare text-obsidian font-ui font-bold uppercase tracking-wider hover:shadow-[0_0_20px_rgba(255,77,0,0.5)] hover:scale-105 transition-all whitespace-nowrap"
+            >
+              Request Access
+            </button>
+          </form>
+          <p class="text-sm text-ash/50 font-body mt-3">We'll only email you about beta access. No spam, ever.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ PWA INSTALL ═══════════════════ -->
+    <section id="install" class="py-24 md:py-32 bg-[#080504] border-t border-charcoal">
+      <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-start">
+        <div>
+          <p class="font-ui text-ember uppercase tracking-widest font-bold mb-3">Web App</p>
+          <h2 class="text-5xl md:text-6xl font-display text-white leading-none mb-6">INSTALL ON<br/>YOUR PHONE</h2>
+          <p class="text-lg text-ash font-body leading-relaxed mb-4">
+            Web Bluetooth pairing works best on <strong class="text-magma">Chrome or Edge for Android</strong> over HTTPS.
+            iOS Safari does not expose Web Bluetooth — use the native Android app when it launches on Google Play.
+          </p>
+          <p class="text-ash font-body leading-relaxed">
+            Don't want to wait? The level builder and web app work right now. Install as a PWA for the full experience.
+          </p>
+        </div>
+        <div class="bg-charcoal border border-white/5 p-8 rounded-xl relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-40 h-40 bg-ember/8 blur-3xl rounded-full"></div>
+          <ol class="list-decimal list-outside ml-6 space-y-6 text-ash font-body text-lg relative z-10">
+            <li>Open <a class="text-flare hover:text-magma transition-colors font-semibold" href="https://web.lavacore.app" target="_blank" rel="noopener noreferrer">web.lavacore.app</a> in Chrome or Edge.</li>
+            <li>Tap the browser menu (⋮) → <strong class="text-paper">Install app</strong> or <strong class="text-paper">Add to Home screen</strong>.</li>
+            <li>Launch LavaCore from your home screen, pair with Web Bluetooth, and play.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ LEVEL BUILDER PREVIEW ═══════════════════ -->
+    <section class="py-24 md:py-32 bg-obsidian border-t border-charcoal">
+      <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="font-ui text-flare uppercase tracking-widest font-bold mb-3">Craft Your Levels</p>
+          <h2 class="text-5xl md:text-6xl font-display text-white leading-none mb-6">LEVEL<br/>BUILDER</h2>
+          <p class="text-lg text-ash font-body leading-relaxed mb-8">
+            Design levels on the same 1000-unit virtual line the firmware uses. Place enemies, lava, conveyors,
+            spawners, and bosses — then export a C++ snippet you can paste straight into the firmware or a markdown recipe for planning.
+          </p>
+          <a class="px-8 py-4 rounded-lg bg-gradient-to-r from-ember to-flare text-obsidian font-ui font-bold uppercase tracking-wider hover:shadow-[0_0_20px_rgba(255,77,0,0.5)] hover:scale-105 transition-all inline-flex items-center gap-2" href="/level-builder">
+            Open Level Builder →
+          </a>
+        </div>
+        <div class="rounded-xl overflow-hidden shadow-[0_0_40px_rgba(255,77,0,0.1)] border border-charcoal relative group">
+          <img src="/assets/level-builder.png" alt="Level Builder interface" loading="lazy" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700" />
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer class="bg-obsidian border-t border-charcoal pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <!-- Brand -->
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <img src="/assets/logo.png" alt="LavaCore" class="h-8 object-contain" />
+            <span class="font-display text-xl text-paper tracking-widest">LAVACORE</span>
+          </div>
+          <p class="text-ash font-body text-sm leading-relaxed">
+            Motion-powered LED gaming. Built for cooperative LED-strip runs by the maker community.
+          </p>
+        </div>
+        <!-- Product -->
+        <div>
+          <h4 class="font-ui text-sm uppercase tracking-widest text-paper font-bold mb-4">Product</h4>
+          <ul class="space-y-2 text-sm text-ash font-body">
+            <li><a class="hover:text-ember transition-colors" href="https://web.lavacore.app" target="_blank" rel="noopener noreferrer">Open Web App</a></li>
+            <li><a class="hover:text-ember transition-colors" href="/flash">Flash Firmware</a></li>
+            <li><a class="hover:text-ember transition-colors" href="/level-builder">Level Builder</a></li>
+            <li><a class="hover:text-ember transition-colors" href="#firmware">Download Firmware</a></li>
+            <li><a class="hover:text-ember transition-colors" href="#beta">Join Beta</a></li>
+          </ul>
+        </div>
+        <!-- Community -->
+        <div>
+          <h4 class="font-ui text-sm uppercase tracking-widest text-paper font-bold mb-4">Community</h4>
+          <ul class="space-y-2 text-sm text-ash font-body">
+            <li><a class="hover:text-ember transition-colors" href="https://github.com/bdring/TWANG32" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+            <li><a class="hover:text-ember transition-colors text-ash/50 cursor-default" title="Coming soon">Discord (coming soon)</a></li>
+            <li><a class="hover:text-ember transition-colors" href="https://github.com/bdring/TWANG32" target="_blank" rel="noopener noreferrer">Original TWANG32</a></li>
+            <li><a class="hover:text-ember transition-colors" href="https://github.com/Critters/TWANG" target="_blank" rel="noopener noreferrer">Original TWANG</a></li>
+          </ul>
+        </div>
+        <!-- Legal -->
+        <div>
+          <h4 class="font-ui text-sm uppercase tracking-widest text-paper font-bold mb-4">Legal</h4>
+          <ul class="space-y-2 text-sm text-ash font-body">
+            <li><a class="hover:text-ember transition-colors" href="/terms">Terms of Service</a></li>
+            <li><a class="hover:text-ember transition-colors" href="/privacy">Privacy Policy</a></li>
+            <li><a class="hover:text-ember transition-colors" href="mailto:support@lavacore.app">support@lavacore.app</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-charcoal pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-ash/50 font-body">© 2024–2026 LavaCore. MIT Licensed. Play your lights.</p>
+        <div class="flex items-center gap-6">
+          <a class="text-ash/50 hover:text-ember transition-colors text-sm font-ui uppercase tracking-wider font-bold" href="https://github.com/bdring/TWANG32" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</BaseLayout>

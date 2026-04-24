@@ -1,0 +1,13 @@
+{
+  "name": "LavaCore — TWANG32 (GPIO 16)",
+  "version": "0.1.6",
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "improv": false,
+      "parts": [
+        { "path": "firmware-esp32dev-merged.bin", "offset": 0 }
+      ]
+    }
+  ]
+}

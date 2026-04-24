@@ -1,0 +1,186 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Flash Firmware | LavaCore" description="Flash LavaCore firmware to your ESP32 directly from your browser. No tools needed.">
+
+  <!-- Sticky nav -->
+  <header class="fixed top-0 inset-x-0 z-50 border-b border-white/10 bg-[#0A0A0A]/90 backdrop-blur-md">
+    <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3 group">
+        <img src="/assets/logo.png" alt="LavaCore" class="h-8 w-auto" />
+        <span class="font-display text-xl text-paper tracking-wider">LAVACORE</span>
+      </a>
+      <a href="/#firmware" class="text-sm text-ash hover:text-ember transition-colors font-semibold">← Back to Home</a>
+    </nav>
+  </header>
+
+  <main class="pt-28 pb-24 px-6">
+    <div class="max-w-3xl mx-auto">
+
+      <!-- Hero -->
+      <div class="text-center mb-16">
+        <p class="font-ui text-flare uppercase tracking-widest font-bold mb-3 text-sm">Web Flasher</p>
+        <h1 class="text-5xl md:text-6xl font-display text-paper mb-4">FLASH YOUR ESP32</h1>
+        <p class="text-lg text-ash max-w-xl mx-auto leading-relaxed">
+          Flash LavaCore firmware directly from your browser. No command line, no drivers, no PlatformIO required.
+        </p>
+      </div>
+
+      <!-- Requirements Banner -->
+      <div class="rounded-xl border border-flare/20 bg-flare/5 p-5 mb-12 flex items-start gap-4">
+        <div class="text-flare text-2xl mt-0.5">⚡</div>
+        <div>
+          <p class="text-paper font-bold text-sm mb-1">Requirements</p>
+          <ul class="text-ash text-sm space-y-1">
+            <li>• <strong class="text-paper">Chrome or Edge</strong> desktop browser (Web Serial API)</li>
+            <li>• <strong class="text-paper">USB data cable</strong> connected to your ESP32</li>
+            <li>• CP210x or CH340 driver (Windows may need it — <a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers" target="_blank" rel="noopener" class="text-flare hover:text-magma underline">download</a>)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Step 1: Pick Board -->
+      <div class="mb-10">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-8 h-8 rounded-full bg-ember/20 text-ember font-display text-lg flex items-center justify-center border border-ember/40">1</span>
+          <h2 class="text-2xl font-display text-paper">PICK YOUR BOARD</h2>
+        </div>
+
+        <div id="board-picker" class="grid gap-4">
+          <!-- TWANG32 / GPIO 16 -->
+          <button data-manifest="/firmware/manifest-esp32dev.json" data-label="TWANG32 / GPIO 16"
+                  class="board-option active rounded-xl border-2 border-ember/60 bg-ember/8 p-5 text-left transition-all hover:border-ember group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-display text-lg text-paper">TWANG32 — GPIO 16</span>
+              <span class="text-xs font-bold uppercase tracking-wider bg-ember/20 text-ember px-2 py-1 rounded">Default</span>
+            </div>
+            <p class="text-sm text-ash">Original TWANG32 hardware, ESP32-WROOM-32 dev board with LED strip on GPIO 16.</p>
+          </button>
+
+          <!-- WLED / GPIO 2 -->
+          <button data-manifest="/firmware/manifest-esp32-gpio2.json" data-label="WLED Board / GPIO 2"
+                  class="board-option rounded-xl border-2 border-white/10 bg-white/3 p-5 text-left transition-all hover:border-flare/40 group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-display text-lg text-paper">WLED BOARDS — GPIO 2</span>
+              <span class="text-xs font-bold uppercase tracking-wider bg-white/10 text-ash px-2 py-1 rounded">Popular</span>
+            </div>
+            <p class="text-sm text-ash">QuinLED, ABC!, Cadsio, and most WLED-compatible ESP32 boards with LED data on GPIO 2.</p>
+          </button>
+
+          <!-- Custom / GPIO 5 -->
+          <button data-manifest="/firmware/manifest-esp32-gpio5.json" data-label="Custom / GPIO 5"
+                  class="board-option rounded-xl border-2 border-white/10 bg-white/3 p-5 text-left transition-all hover:border-flare/40 group">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-display text-lg text-paper">CUSTOM — GPIO 5</span>
+            </div>
+            <p class="text-sm text-ash">Custom wiring with LED strip connected to GPIO 5.</p>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Connect & Flash -->
+      <div class="mb-10">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-8 h-8 rounded-full bg-ember/20 text-ember font-display text-lg flex items-center justify-center border border-ember/40">2</span>
+          <h2 class="text-2xl font-display text-paper">CONNECT & FLASH</h2>
+        </div>
+
+        <div class="rounded-xl border border-white/10 bg-[#141010] p-8 flex flex-col items-center gap-6">
+          <p class="text-ash text-sm text-center max-w-md">
+            Plug your ESP32 into USB, click the button below, and select the serial port in the browser dialog.
+          </p>
+
+          <div id="install-container" class="w-full flex justify-center">
+            <esp-web-install-button id="flash-button" manifest="/firmware/manifest-esp32dev.json">
+              <button slot="activate"
+                      class="px-10 py-4 rounded-lg bg-gradient-to-r from-ember to-crimson text-white font-ui font-bold uppercase tracking-wider text-lg hover:scale-105 hover:shadow-[0_0_40px_rgba(204,51,0,0.7)] transition-all inline-flex items-center justify-center gap-3 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Flash LavaCore Firmware
+              </button>
+              <span slot="unsupported">
+                <div class="rounded-lg border border-crimson/40 bg-crimson/10 p-4 text-center max-w-md">
+                  <p class="text-crimson font-bold text-sm mb-1">Browser Not Supported</p>
+                  <p class="text-ash text-sm">Web Serial requires <strong class="text-paper">Chrome</strong> or <strong class="text-paper">Edge</strong> on desktop. Mobile browsers are not supported.</p>
+                </div>
+              </span>
+            </esp-web-install-button>
+          </div>
+
+          <p id="selected-board" class="text-sm text-flare font-bold">Board: TWANG32 / GPIO 16</p>
+        </div>
+      </div>
+
+      <!-- Step 3: What's Next -->
+      <div>
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-8 h-8 rounded-full bg-ember/20 text-ember font-display text-lg flex items-center justify-center border border-ember/40">3</span>
+          <h2 class="text-2xl font-display text-paper">WHAT'S NEXT</h2>
+        </div>
+
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div class="rounded-xl border border-white/10 bg-[#141010] p-5">
+            <div class="text-3xl mb-3">📱</div>
+            <h3 class="font-display text-paper text-lg mb-2">OPEN THE APP</h3>
+            <p class="text-sm text-ash">Go to <a href="https://web.lavacore.app" target="_blank" class="text-flare hover:text-magma font-semibold">web.lavacore.app</a> on your phone in Chrome/Edge.</p>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-[#141010] p-5">
+            <div class="text-3xl mb-3">🔗</div>
+            <h3 class="font-display text-paper text-lg mb-2">PAIR DEVICE</h3>
+            <p class="text-sm text-ash">Tap "Pair" and select your TWANG device from the Bluetooth dialog.</p>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-[#141010] p-5">
+            <div class="text-3xl mb-3">🎮</div>
+            <h3 class="font-display text-paper text-lg mb-2">PLAY</h3>
+            <p class="text-sm text-ash">Tilt to move, shake to attack. Conquer the lava lane!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Firmware version note -->
+      <div class="mt-12 text-center">
+        <p class="text-xs text-ash/60">
+          Firmware v0.1.6 · ESP32-WROOM-32 · WS2812B · NimBLE
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="border-t border-white/10 px-5 py-8 text-center text-sm text-ash">
+    <a href="/" class="hover:text-ember">Home</a> ·
+    <a href="/terms" class="hover:text-ember">Terms</a> ·
+    <a href="/privacy" class="hover:text-ember">Privacy</a> ·
+    <a href="mailto:support@lavacore.app" class="hover:text-ember">support@lavacore.app</a>
+  </footer>
+
+  <!-- ESP Web Tools -->
+  <script is:inline type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+
+  <!-- Board picker logic -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function() {
+      var buttons = document.querySelectorAll('.board-option');
+      var flashBtn = document.getElementById('flash-button');
+      var label = document.getElementById('selected-board');
+
+      buttons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          // Update active state
+          buttons.forEach(function(b) {
+            b.classList.remove('active', 'border-ember/60', 'bg-ember/8');
+            b.classList.add('border-white/10', 'bg-white/3');
+          });
+          btn.classList.add('active', 'border-ember/60', 'bg-ember/8');
+          btn.classList.remove('border-white/10', 'bg-white/3');
+
+          // Update manifest
+          var manifest = btn.getAttribute('data-manifest');
+          var boardLabel = btn.getAttribute('data-label');
+          if (flashBtn && manifest) flashBtn.setAttribute('manifest', manifest);
+          if (label && boardLabel) label.textContent = 'Board: ' + boardLabel;
+        });
+      });
+    });
+  </script>
+</BaseLayout>

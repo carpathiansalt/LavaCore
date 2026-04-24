@@ -1,0 +1,13 @@
+{
+  "name": "LavaCore — Custom (GPIO 5)",
+  "version": "0.1.6",
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "improv": false,
+      "parts": [
+        { "path": "firmware-esp32-gpio5-merged.bin", "offset": 0 }
+      ]
+    }
+  ]
+}

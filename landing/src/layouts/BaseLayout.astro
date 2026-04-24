@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'LavaCore | Motion-Powered LED Gaming',
+  description = 'Turn any LED strip into a cooperative arcade run. Connect your ESP32, tilt to move, shake to attack, and conquer the lava lane with your friends.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="LED game, ESP32, BLE controller, TWANG32, multiplayer LED, motion gaming, WS2812B, level builder, LavaCore" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={`https://lavacore.app${Astro.url.pathname}`} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LavaCore" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://lavacore.app/assets/lavacore-hero-bg.png" />
+    <meta property="og:url" content={`https://lavacore.app${Astro.url.pathname}`} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://lavacore.app/assets/lavacore-hero-bg.png" />
+
+    <meta name="theme-color" content="#0A0A0A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <title>{title}</title>
+  </head>
+  <body class="bg-obsidian text-paper font-body antialiased selection:bg-ember selection:text-white">
+    <slot />
+  </body>
+</html>

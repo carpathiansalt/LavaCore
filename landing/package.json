@@ -1,0 +1,20 @@
+{
+  "name": "lavacore-landing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build && node scripts/sync-firebase-dist.mjs",
+    "check": "astro check",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/tailwind": "^5.1.5",
+    "astro": "^5.15.7",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3"
+  }
+}
