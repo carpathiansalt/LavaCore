@@ -1,38 +1,39 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
 
 const features = [
   {
-    icon: '📱',
+    icon: 'phone',
     title: 'Motion Control',
     body: 'Tilt your phone to move left or right. Your device becomes the joystick — no extra hardware needed on the player side.',
   },
   {
-    icon: '⚔️',
+    icon: 'swords',
     title: 'Attack System',
     body: 'Tap or shake to unleash a powerful wobble attack that sweeps the LED strip and destroys enemies in its path.',
   },
   {
-    icon: '⚡',
+    icon: 'bolt',
     title: 'Low Latency BLE',
     body: 'Optimized Bluetooth Low Energy connection at 40 Hz delivers real-time, lag-free gameplay over NimBLE GATT.',
   },
   {
-    icon: '🎨',
+    icon: 'palette',
     title: 'Fully Configurable',
     body: 'Tune LED count, brightness, attack sensitivity, lives, input mode, volume, and ambient presets — all from the app, applied to your board in real time over BLE.',
   },
   {
-    icon: '👥',
+    icon: 'users',
     title: 'Up to 4 Players',
     body: 'Each phone gets a stable color slot. Team score up front, personal skill still visible. Late joiners wait for a safe level boundary.',
   },
   {
-    icon: '🛠️',
+    icon: 'wrench',
     title: 'Level Builder',
     body: 'Design custom levels on the same 1000-unit virtual line used by the firmware. Place enemies, lava, conveyors, and bosses, then export to C++ or share as JSON.',
   },
-];
+] as const;
 
 const steps = [
   { num: '01', title: 'Pair', desc: 'Power on your ESP32. Open LavaCore, scan for your controller, and bind it to your phone over BLE.' },
@@ -123,10 +124,10 @@ const timeline = [
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
           <a id="cta-play" class="px-10 py-4 rounded-lg bg-gradient-to-r from-ember to-crimson text-white font-ui font-bold uppercase tracking-wider text-lg hover:scale-105 hover:shadow-[0_0_40px_rgba(204,51,0,0.7)] transition-all flex items-center justify-center gap-3" href="https://web.lavacore.app" target="_blank" rel="noopener noreferrer">
-            ▶ Play Now
+            <Icon name="play" class="h-5 w-5" /> Play Now
           </a>
           <a id="cta-firmware" class="px-10 py-4 rounded-lg border-2 border-ember/40 bg-charcoal/60 backdrop-blur text-paper font-ui font-bold uppercase tracking-wider text-lg hover:border-ember hover:bg-charcoal transition-all flex items-center justify-center gap-3" href="#firmware">
-            ⬇ Get Firmware
+            <Icon name="download" class="h-5 w-5" /> Get Firmware
           </a>
         </div>
       </div>
@@ -144,7 +145,9 @@ const timeline = [
           {features.map((f) => (
             <article class="bg-charcoal/80 p-8 rounded-xl border border-white/5 hover:border-ember/40 transition-all group relative overflow-hidden hover:shadow-[0_0_30px_rgba(255,77,0,0.08)]">
               <div class="absolute inset-0 bg-gradient-to-br from-ember/8 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div class="text-4xl mb-4 relative z-10">{f.icon}</div>
+              <div class="mb-4 relative z-10 text-ember">
+                <Icon name={f.icon} class="h-10 w-10" />
+              </div>
               <h3 class="text-2xl font-display tracking-wide text-white mb-3 relative z-10">{f.title}</h3>
               <p class="text-ash font-body leading-relaxed relative z-10">{f.body}</p>
             </article>
@@ -311,14 +314,15 @@ const timeline = [
           <div class="flex flex-wrap gap-4">
             <a id="btn-firmware-flash" class="px-8 py-4 rounded-lg bg-gradient-to-r from-ember to-crimson text-white font-ui font-bold uppercase tracking-wider hover:scale-105 hover:shadow-[0_0_30px_rgba(204,51,0,0.6)] transition-all inline-flex items-center gap-2"
                href="/flash">
-              ⚡ Flash from Browser
+              <Icon name="bolt" class="h-5 w-5" /> Flash from Browser
             </a>
-            <a id="btn-firmware-download" class="px-8 py-4 rounded-lg border border-white/20 bg-charcoal/50 text-paper font-ui font-bold uppercase tracking-wider hover:border-ember transition-all"
-               href="https://firebasestorage.googleapis.com/v0/b/led-runner.firebasestorage.app/o/firmware%2Fesp32dev%2Ffirmware.bin?alt=media" download="lavacore-firmware.bin">
-              ⬇ Download .bin
+            <a id="btn-firmware-download" class="px-8 py-4 rounded-lg border border-white/20 bg-charcoal/50 text-paper font-ui font-bold uppercase tracking-wider hover:border-ember transition-all inline-flex items-center gap-2"
+               href="/firmware/firmware-esp32dev-merged.bin" download="firmware-esp32dev-merged.bin"
+               title="Default TWANG32 / GPIO 16 merged image. The browser flasher picks the image for your board.">
+              <Icon name="download" class="h-5 w-5" /> Download .bin
             </a>
             <a id="btn-firmware-source" class="px-8 py-4 rounded-lg border border-white/20 bg-charcoal/50 text-paper font-ui font-bold uppercase tracking-wider hover:border-ember transition-all"
-               href="https://github.com/nicholasgasior/TWANG32" target="_blank" rel="noopener noreferrer">
+               href="https://github.com/carpathiansalt/LavaCore" target="_blank" rel="noopener noreferrer">
               View Source
             </a>
           </div>
@@ -447,8 +451,7 @@ const timeline = [
         <div>
           <h4 class="font-ui text-sm uppercase tracking-widest text-paper font-bold mb-4">Community</h4>
           <ul class="space-y-2 text-sm text-ash font-body">
-            <li><a class="hover:text-ember transition-colors" href="https://github.com/bdring/TWANG32" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-            <li><a class="hover:text-ember transition-colors text-ash/50 cursor-default" title="Coming soon">Discord (coming soon)</a></li>
+            <li><a class="hover:text-ember transition-colors" href="https://github.com/carpathiansalt/LavaCore" target="_blank" rel="noopener noreferrer">GitHub</a></li>
             <li><a class="hover:text-ember transition-colors" href="https://github.com/bdring/TWANG32" target="_blank" rel="noopener noreferrer">Original TWANG32</a></li>
             <li><a class="hover:text-ember transition-colors" href="https://github.com/Critters/TWANG" target="_blank" rel="noopener noreferrer">Original TWANG</a></li>
           </ul>
@@ -467,7 +470,7 @@ const timeline = [
       <div class="border-t border-charcoal pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p class="text-sm text-ash/50 font-body">© 2024–2026 LavaCore. MIT Licensed. Play your lights.</p>
         <div class="flex items-center gap-6">
-          <a class="text-ash/50 hover:text-ember transition-colors text-sm font-ui uppercase tracking-wider font-bold" href="https://github.com/bdring/TWANG32" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="text-ash/50 hover:text-ember transition-colors text-sm font-ui uppercase tracking-wider font-bold" href="https://github.com/carpathiansalt/LavaCore" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
       </div>
     </div>

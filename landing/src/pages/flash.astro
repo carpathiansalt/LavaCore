@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
 ---
 
 <BaseLayout title="Flash Firmware | LavaCore" description="Flash LavaCore firmware to your ESP32 directly from your browser. No tools needed.">
@@ -29,7 +30,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       <!-- Requirements Banner -->
       <div class="rounded-xl border border-flare/20 bg-flare/5 p-5 mb-12 flex items-start gap-4">
-        <div class="text-flare text-2xl mt-0.5">⚡</div>
+        <Icon name="bolt" class="mt-0.5 h-6 w-6 text-flare" />
         <div>
           <p class="text-paper font-bold text-sm mb-1">Requirements</p>
           <ul class="text-ash text-sm space-y-1">
@@ -95,7 +96,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <esp-web-install-button id="flash-button" manifest="/firmware/manifest-esp32dev.json">
               <button slot="activate"
                       class="px-10 py-4 rounded-lg bg-gradient-to-r from-ember to-crimson text-white font-ui font-bold uppercase tracking-wider text-lg hover:scale-105 hover:shadow-[0_0_40px_rgba(204,51,0,0.7)] transition-all inline-flex items-center justify-center gap-3 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <Icon name="download" class="h-5 w-5" />
                 Flash LavaCore Firmware
               </button>
               <span slot="unsupported">
@@ -120,17 +121,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <div class="grid sm:grid-cols-3 gap-4">
           <div class="rounded-xl border border-white/10 bg-[#141010] p-5">
-            <div class="text-3xl mb-3">📱</div>
+            <Icon name="phone" class="mb-3 h-8 w-8 text-ember" />
             <h3 class="font-display text-paper text-lg mb-2">OPEN THE APP</h3>
-            <p class="text-sm text-ash">Go to <a href="https://web.lavacore.app" target="_blank" class="text-flare hover:text-magma font-semibold">web.lavacore.app</a> on your phone in Chrome/Edge.</p>
+            <p class="text-sm text-ash">Go to <a href="https://web.lavacore.app" target="_blank" rel="noopener noreferrer" class="text-flare hover:text-magma font-semibold">web.lavacore.app</a> on your phone in Chrome/Edge.</p>
           </div>
           <div class="rounded-xl border border-white/10 bg-[#141010] p-5">
-            <div class="text-3xl mb-3">🔗</div>
+            <Icon name="link" class="mb-3 h-8 w-8 text-ember" />
             <h3 class="font-display text-paper text-lg mb-2">PAIR DEVICE</h3>
             <p class="text-sm text-ash">Tap "Pair" and select your TWANG device from the Bluetooth dialog.</p>
           </div>
           <div class="rounded-xl border border-white/10 bg-[#141010] p-5">
-            <div class="text-3xl mb-3">🎮</div>
+            <Icon name="gamepad" class="mb-3 h-8 w-8 text-ember" />
             <h3 class="font-display text-paper text-lg mb-2">PLAY</h3>
             <p class="text-sm text-ash">Tilt to move, shake to attack. Conquer the lava lane!</p>
           </div>
